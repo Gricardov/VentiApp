@@ -1,38 +1,40 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  /* ─── Dark Theme Palette ─── */
-  --bg-primary: #0a0a0f;
-  --bg-secondary: #12121a;
-  --bg-tertiary: #1a1a2e;
-  --bg-card: rgba(26, 26, 46, 0.6);
-  --bg-glass: rgba(255, 255, 255, 0.03);
-  --bg-input: rgba(255, 255, 255, 0.05);
+  /* ─── Light Blue Theme Palette ─── */
+  --bg-primary: #f0f4f8;
+  /* Soft baby blue background */
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #e6eef5;
+  --bg-card: rgba(255, 255, 255, 0.7);
+  --bg-glass: rgba(255, 255, 255, 0.4);
+  --bg-input: rgba(255, 255, 255, 0.8);
 
   /* ─── Accent Colors ─── */
-  --accent-primary: #6c5ce7;
-  --accent-secondary: #a29bfe;
-  --accent-gradient: linear-gradient(135deg, #6c5ce7, #a29bfe);
-  --accent-glow: rgba(108, 92, 231, 0.3);
-  --success: #00b894;
-  --warning: #fdcb6e;
-  --danger: #e17055;
-  --info: #74b9ff;
+  --accent-primary: #1d4ed8;
+  /* Deep royal blue */
+  --accent-secondary: #3b82f6;
+  --accent-gradient: linear-gradient(135deg, #1d4ed8, #3b82f6);
+  --accent-glow: rgba(29, 78, 216, 0.3);
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --info: #0ea5e9;
 
   /* ─── Text Colors ─── */
-  --text-primary: #e0e0e8;
-  --text-secondary: #8888a0;
-  --text-muted: #55557a;
-  --text-accent: #a29bfe;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-accent: #1d4ed8;
 
   /* ─── Borders ─── */
-  --border-subtle: rgba(255, 255, 255, 0.06);
-  --border-accent: rgba(108, 92, 231, 0.3);
+  --border-subtle: rgba(15, 23, 42, 0.1);
+  --border-accent: rgba(29, 78, 216, 0.3);
 
   /* ─── Shadows ─── */
-  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.3);
-  --shadow-glow: 0 0 40px rgba(108, 92, 231, 0.15);
-  --shadow-button: 0 4px 15px rgba(108, 92, 231, 0.3);
+  --shadow-card: 0 8px 32px rgba(15, 23, 42, 0.08);
+  --shadow-glow: 0 0 40px rgba(59, 130, 246, 0.15);
+  --shadow-button: 0 4px 15px rgba(29, 78, 216, 0.25);
 
   /* ─── Typography ─── */
   --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -55,7 +57,8 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   font-family: var(--font-main);
   background: var(--bg-primary);
@@ -68,13 +71,16 @@ html, body {
 ::-webkit-scrollbar {
   width: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--text-muted);
   border-radius: 3px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-secondary);
 }
@@ -109,10 +115,12 @@ html, body {
   color: white;
   box-shadow: var(--shadow-button);
 }
+
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+  box-shadow: 0 6px 20px rgba(29, 78, 216, 0.35);
 }
+
 .btn-primary:active {
   transform: translateY(0);
 }
@@ -122,6 +130,7 @@ html, body {
   color: var(--text-primary);
   border: 1px solid var(--border-subtle);
 }
+
 .btn-ghost:hover {
   background: rgba(255, 255, 255, 0.08);
   border-color: var(--border-accent);
@@ -131,6 +140,7 @@ html, body {
   background: linear-gradient(135deg, #00b894, #00cec9);
   color: white;
 }
+
 .btn-success:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 15px rgba(0, 184, 148, 0.3);
@@ -149,10 +159,12 @@ html, body {
   outline: none;
   transition: all var(--transition-normal);
 }
+
 .input:focus {
   border-color: var(--accent-primary);
   box-shadow: 0 0 0 3px var(--accent-glow);
 }
+
 .input::placeholder {
   color: var(--text-muted);
 }
@@ -163,6 +175,7 @@ html, body {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -174,6 +187,7 @@ html, body {
     opacity: 0;
     transform: translateX(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -181,13 +195,25 @@ html, body {
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(108, 92, 231, 0.1); }
-  50% { box-shadow: 0 0 40px rgba(108, 92, 231, 0.25); }
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+  }
+
+  50% {
+    box-shadow: 0 0 40px rgba(59, 130, 246, 0.3);
+  }
 }
 
 @keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
+  0% {
+    background-position: -200% center;
+  }
+
+  100% {
+    background-position: 200% center;
+  }
 }
 
 .animate-fade-in-up {
@@ -202,7 +228,7 @@ html, body {
 .tag {
   display: inline-block;
   padding: 3px 10px;
-  background: rgba(108, 92, 231, 0.15);
+  background: rgba(59, 130, 246, 0.15);
   color: var(--accent-secondary);
   border-radius: 20px;
   font-size: 11px;

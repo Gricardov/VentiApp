@@ -193,6 +193,9 @@ export default function ChatPage() {
                 </div>
                 <div className={styles.headerRight}>
                     <span className={styles.greeting}>Hola, {userName}</span>
+                    <button className="btn btn-ghost" onClick={() => router.push('/my-events')} style={{ fontSize: '13px', padding: '6px 14px' }}>
+                        Mis Eventos
+                    </button>
                     <button className="btn btn-ghost" onClick={handleLogout} style={{ fontSize: '13px', padding: '6px 14px' }}>
                         Salir
                     </button>

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { endpoints } from '@/lib/api';
 import styles from './login.module.css';
 
@@ -39,10 +40,18 @@ export default function LoginPage() {
 
             <form onSubmit={handleSubmit} className={`${styles.card} glass`}>
                 <div className={styles.logo}>
-                    <span className={styles.logoIcon}>✦</span>
-                    <h1 className={styles.title}>Venti</h1>
+                    <div className={styles.mascotWrapper}>
+                        <Image
+                            src="/venti_mascot.png"
+                            alt="Venti Mascot"
+                            width={160}
+                            height={160}
+                            className={styles.mascotImage}
+                            priority
+                        />
+                    </div>
                 </div>
-                <p className={styles.subtitle}>Descubre eventos que te apasionan</p>
+                <p className={styles.subtitle}>Tu asistente inteligente de eventos</p>
 
                 {error && <div className={styles.error}>{error}</div>}
 
