@@ -23,6 +23,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    environment:
+      - NODE_TLS_REJECT_UNAUTHORIZED=0
     env_file:
       - ./frontend/.env.local
     volumes:
