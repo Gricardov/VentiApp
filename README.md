@@ -7,33 +7,52 @@ Plataforma de descubrimiento de eventos impulsada por IA. Conversa con Venti par
 ### Prerequisites
 - Docker & Docker Compose
 - OpenRouter API Key ([get one here](https://openrouter.ai))
+- `mkcert` (for local HTTPS development)
 
-### 1. Configure Environment
+### 1. Configure HTTPS (mkcert)
+Local HTTPS is **required** for Web Push Notifications and Service Workers.
 
 ```bash
-# Backend: Set your OpenRouter API key
+# 1. Install mkcert (if not installed)
+brew install mkcert
+mkcert -install
+
+# 2. Generate local certificates in Venti directory
+mkdir -p certs && cd certs
+mkcert localhost 127.0.0.1 ::1
+```
+This generates `localhost+2.pem` and `localhost+2-key.pem` inside the `certs/` folder, which Docker mounts automatically.
+
+### 2. Configure Environment
+
+```bash
+# Backend: Set your OpenRouter API key and VAPID Keys
 echo "OPENROUTER_API_KEY=your-key-here" >> backend/.env
+
+# Optionally generate your own VAPID keys for web push:
+# cd backend && npx web-push generate-vapid-keys
 ```
 
-### 2. Run with Docker
+### 3. Run with Docker
 
 ```bash
 docker compose up --build
 ```
 
-- **Frontend**: http://localhost:3000
-- **Backend**: http://localhost:4000
+- **Frontend**: https://localhost:3000
+- **Backend**: https://localhost:4000
 
-### 3. Login
+### 4. Login
 
 Use one of the demo accounts:
 
-| Email | Password |
-|-------|----------|
-| `ana@example.com` | `password123` |
-| `carlos@example.com` | `password123` |
-| `maria@example.com` | `password123` |
-| `diego@example.com` | `password123` |
+| Email | Password | Role |
+|-------|----------|------|
+| `ana@example.com` | `password123` | User |
+| `carlos@example.com` | `password123`| User |
+| `maria@example.com` | `password123` | User |
+| `diego@example.com` | `password123` | User |
+| `admin@venti.com` | `admin123` | **Admin** |
 
 ---
 
@@ -291,12 +310,14 @@ The AI agent uses a **StateGraph** with these nodes:
 
 ## 🎨 Features
 
-- **Dark Theme** — Glassmorphism, smooth gradients, micro-animations
-- **Itinerary Cards** — Photo, match %, tags, enroll/save buttons
-- **"Sorpréndeme" Button** — One-click event discovery
-- **Itinerary Modification** — "Elimina el segundo", "Agrega cocina"
-- **Enrollment Flow** — Confirm and persist to JSON
-- **Conversation Memory** — Per-user session with last 20 messages
+- **Light Blue Theme** — Minimalist, soft blue backgrounds with royal blue accents and glassmorphism.
+- **Push Notifications** — Real-time Web Push alerts using Service Workers and native Push API.
+- **Admin Dashboard** — Route to `https://localhost:3000/admin` to send push notifications to everyone.
+- **Itinerary Cards** — Photo, match %, tags, enroll/save/cancel buttons.
+- **"Sorpréndeme" Button** — One-click event discovery.
+- **Voice TTS & Speech Input** — Escucha la IA en español y dictale por voz.
+- **My Events** — View and manage your enrollments on a dedicated page.
+- **Conversation Memory** — Per-user session with last 20 messages.
 
 ## ⚙️ Environment Variables
 
