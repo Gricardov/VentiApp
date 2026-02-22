@@ -55,13 +55,28 @@ export default function ChatPage() {
         setLoading(true);
 
         try {
-            const response = await endpoints.chat(text.trim());
+            const raw = await endpoints.chat(text.trim());
+
+            // Safety: parse response and strip leaked JSON from text
+            let finalText = raw.text || '';
+            let finalOptions = raw.options || [];
+
+            // If text looks like it contains a JSON object, try to extract
+            if (finalText.startsWith('{') && finalText.includes('"text"')) {
+                try {
+                    const parsed = JSON.parse(finalText);
+                    if (parsed.text) finalText = parsed.text;
+                    if (parsed.options?.length) finalOptions = parsed.options;
+                } catch {
+                    // Not valid JSON, use as-is
+                }
+            }
 
             const assistantMessage: Message = {
                 id: (Date.now() + 1).toString(),
                 role: 'assistant',
-                text: response.text || '',
-                options: response.options,
+                text: finalText,
+                options: finalOptions,
                 timestamp: new Date(),
             };
 

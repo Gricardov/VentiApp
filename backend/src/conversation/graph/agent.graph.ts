@@ -1,8 +1,8 @@
 import { ChatOpenAI } from '@langchain/openai';
 import { StateGraph, MessagesAnnotation, END, START } from '@langchain/langgraph';
 import { ToolNode } from '@langchain/langgraph/prebuilt';
-import { SystemMessage, HumanMessage, AIMessage, BaseMessage } from '@langchain/core/messages';
-import { UserPreferences, UserLocation } from '../../common/types';
+import { SystemMessage, HumanMessage, AIMessage, ToolMessage, BaseMessage } from '@langchain/core/messages';
+import { UserPreferences, UserLocation, OptionItem } from '../../common/types';
 import { EventProvider } from '../../providers/event.provider';
 import { EnrollmentProvider } from '../../providers/enrollment.provider';
 import { createSuggestEventsTool } from './tools/suggest-events.tool';
@@ -10,19 +10,18 @@ import { createEnrollUserTool } from './tools/enroll-user.tool';
 
 const SYSTEM_PROMPT = `Eres Venti, un asistente inteligente de descubrimiento de eventos. Tu personalidad es amigable, entusiasta y conocedora de la escena de eventos en Latinoamérica.
 
-INSTRUCCIONES CRÍTICAS DE FORMATO DE RESPUESTA:
-- SIEMPRE responde en formato JSON válido con esta estructura exacta:
-  {"text": "tu mensaje aquí", "options": []} 
-- El campo "text" es tu mensaje conversacional al usuario.
-- El campo "options" es un array que SOLO debe contener eventos/opciones cuando uses la herramienta suggest_events.
-- Cuando la herramienta suggest_events devuelva resultados, DEBES incluir esos resultados parseados en el campo "options".
-- Cada opción en "options" debe tener: id, title, description, imageUrl, matchPercentage, tags, date, time, location, price, category, enrolled, saved.
-
 COMPORTAMIENTO:
-1. Cuando el usuario pida sugerencias de eventos o diga "sorpréndeme", usa la herramienta suggest_events.
-2. Cuando el usuario quiera modificar el itinerario (eliminar, agregar, cambiar eventos), usa suggest_events para buscar nuevos eventos y ajusta las opciones.
-3. Cuando el usuario confirme que quiere inscribirse, usa la herramienta enroll_user con los IDs de los eventos.
-4. Para conversación general, responde con text y options vacío.
+1. Al inicio de la conversación, saluda al usuario por su nombre y menciona sus intereses y ubicación. Pregúntale si quiere sugerencias basadas en esos intereses o si quiere explorar algo diferente.
+2. Cuando el usuario pida sugerencias de eventos, diga "sorpréndeme", o confirme sus intereses, usa la herramienta suggest_events.
+3. Cuando el usuario quiera modificar el itinerario (eliminar, agregar, cambiar eventos), usa suggest_events para buscar nuevos eventos y ajusta las opciones según lo que pida.
+4. Cuando el usuario confirme que quiere inscribirse, usa la herramienta enroll_user con los IDs de los eventos.
+5. Para conversación general, responde normalmente sin usar herramientas.
+
+IMPORTANTE:
+- NO incluyas JSON en tus respuestas de texto. Solo responde en lenguaje natural.
+- Las herramientas se encargan de devolver los datos estructurados.
+- Cuando uses suggest_events, en tu texto describe brevemente los eventos sugeridos y pregunta al usuario qué le parece.
+- Siempre menciona los nombres de los eventos en tu respuesta para que el usuario sepa qué se le sugirió.
 
 INFORMACIÓN DEL USUARIO:
 - Nombre: {userName}
@@ -46,6 +45,33 @@ function buildSystemPrompt(
         .replace('{userSchedule}', preferences.preferredSchedule);
 }
 
+/**
+ * Extracts OptionItem[] from tool messages in the conversation.
+ * This is the key fix: we parse options from the tool results directly,
+ * not from the LLM's text output.
+ */
+function extractOptionsFromMessages(messages: BaseMessage[]): OptionItem[] {
+    const options: OptionItem[] = [];
+
+    for (const msg of messages) {
+        if (msg instanceof ToolMessage) {
+            try {
+                const parsed = JSON.parse(
+                    typeof msg.content === 'string' ? msg.content : JSON.stringify(msg.content),
+                );
+                // Check if it's an array of OptionItems (from suggest_events)
+                if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].id && parsed[0].title) {
+                    options.push(...parsed);
+                }
+            } catch {
+                // Not JSON or not options — skip
+            }
+        }
+    }
+
+    return options;
+}
+
 export async function runConversation(
     message: string,
     conversationHistory: BaseMessage[],
@@ -55,10 +81,12 @@ export async function runConversation(
     userLocation: UserLocation,
     eventProvider: EventProvider,
     enrollmentProvider: EnrollmentProvider,
+    apiKey: string,
+    modelName: string,
 ) {
     const model = new ChatOpenAI({
-        modelName: process.env.OPENROUTER_MODEL || 'google/gemini-2.0-flash-001',
-        openAIApiKey: process.env.OPENROUTER_API_KEY,
+        modelName,
+        openAIApiKey: apiKey,
         configuration: {
             baseURL: 'https://openrouter.ai/api/v1',
         },
@@ -116,26 +144,17 @@ export async function runConversation(
         messages: initialMessages,
     });
 
+    // Extract the final AI text from the last message
     const lastMessage = result.messages[result.messages.length - 1];
-    const content = typeof lastMessage.content === 'string'
+    const text = typeof lastMessage.content === 'string'
         ? lastMessage.content
         : JSON.stringify(lastMessage.content);
 
-    // Try to parse as JSON response schema
-    try {
-        const parsed = JSON.parse(content);
-        if (parsed.text !== undefined || parsed.options !== undefined) {
-            return {
-                text: parsed.text || '',
-                options: parsed.options || [],
-            };
-        }
-    } catch {
-        // If not valid JSON, wrap in text field
-    }
+    // Extract options from ALL tool messages in the result
+    const options = extractOptionsFromMessages(result.messages);
 
     return {
-        text: content,
-        options: [],
+        text,
+        options,
     };
 }

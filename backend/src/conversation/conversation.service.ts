@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { BaseMessage, HumanMessage, AIMessage } from '@langchain/core/messages';
 import { UserProvider } from '../providers/user.provider';
 import { EventProvider } from '../providers/event.provider';
@@ -15,6 +16,7 @@ export class ConversationService {
     private sessions: Map<string, ConversationSession> = new Map();
 
     constructor(
+        private readonly configService: ConfigService,
         private readonly userProvider: UserProvider,
         private readonly eventProvider: EventProvider,
         private readonly enrollmentProvider: EnrollmentProvider,
@@ -35,6 +37,22 @@ export class ConversationService {
 
         const session = this.getOrCreateSession(userId);
 
+        const apiKey = this.configService.get<string>('OPENROUTER_API_KEY')
+            || process.env.OPENROUTER_API_KEY
+            || '';
+        const model = this.configService.get<string>('OPENROUTER_MODEL')
+            || process.env.OPENROUTER_MODEL
+            || 'google/gemini-2.0-flash-001';
+
+        console.log(`[Venti] Using model: ${model}, API key loaded: ${apiKey ? 'YES (' + apiKey.substring(0, 10) + '...)' : 'NO ❌'}`);
+
+        if (!apiKey) {
+            return {
+                text: '⚠️ Error: No se encontró la API key de OpenRouter. Configura OPENROUTER_API_KEY en backend/.env',
+                options: [],
+            };
+        }
+
         const result = await runConversation(
             message,
             session.history,
@@ -44,6 +62,8 @@ export class ConversationService {
             userInfo.location,
             this.eventProvider,
             this.enrollmentProvider,
+            apiKey,
+            model,
         );
 
         // Update conversation history
