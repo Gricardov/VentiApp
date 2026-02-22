@@ -12,6 +12,7 @@ services:
     volumes:
       - ./backend:/app
       - /app/node_modules
+      - ./certs:/app/../certs
     command: npm run start:dev
     networks:
       - venti-network
@@ -28,7 +29,8 @@ services:
       - ./frontend:/app
       - /app/node_modules
       - /app/.next
-    command: npm run dev
+      - ./certs:/certs
+    command: npx next dev --experimental-https
     depends_on:
       - backend
     networks:

@@ -13,6 +13,43 @@ export default function LoginPage() {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
+    const VAPID_PUBLIC_KEY = 'BJXV-EL_nwMBZ4vcpQ102a9JgqnWCuWHgkSBk6aYshNU4c3ln5CrrSCKfXB-WEWHjGk8akZitpxRA8Zh3y3Bh3o';
+
+    const urlBase64ToUint8Array = (base64String: string) => {
+        const padding = '='.repeat((4 - base64String.length % 4) % 4);
+        const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+        const rawData = window.atob(base64);
+        const outputArray = new Uint8Array(rawData.length);
+        for (let i = 0; i < rawData.length; ++i) {
+            outputArray[i] = rawData.charCodeAt(i);
+        }
+        return outputArray;
+    };
+
+    const registerPushSubscription = async () => {
+        try {
+            if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+
+            const permission = await Notification.requestPermission();
+            if (permission !== 'granted') return;
+
+            const registration = await navigator.serviceWorker.register('/sw.js');
+            await navigator.serviceWorker.ready;
+
+            const subscription = await registration.pushManager.subscribe({
+                userVisuallyIndicatesState: true,
+                applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+            } as PushSubscriptionOptionsInit);
+
+            const sub = subscription.toJSON();
+            if (sub.endpoint && sub.keys) {
+                await endpoints.notifications.subscribe(sub);
+            }
+        } catch (err) {
+            console.warn('[Venti] Push registration failed:', err);
+        }
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
@@ -22,7 +59,16 @@ export default function LoginPage() {
             const data = await endpoints.login(email, password);
             localStorage.setItem('venti_token', data.access_token);
             localStorage.setItem('venti_user', JSON.stringify(data.user));
-            router.push('/chat');
+
+            // Request push notification permission
+            await registerPushSubscription();
+
+            // Route based on role
+            if ((data.user as any).role === 'admin') {
+                router.push('/admin');
+            } else {
+                router.push('/chat');
+            }
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Error al iniciar sesión');
         } finally {
@@ -40,16 +86,13 @@ export default function LoginPage() {
 
             <form onSubmit={handleSubmit} className={`${styles.card} glass`}>
                 <div className={styles.logo}>
-                    <div className={styles.mascotWrapper}>
-                        <Image
-                            src="/venti_mascot.png"
-                            alt="Venti Mascot"
-                            width={160}
-                            height={160}
-                            className={styles.mascotImage}
-                            priority
-                        />
-                    </div>
+                    <Image
+                        src="/venti_logo.png"
+                        alt="Venti"
+                        width={180}
+                        height={180}
+                        priority
+                    />
                 </div>
                 <p className={styles.subtitle}>Tu asistente inteligente de eventos</p>
 
@@ -89,7 +132,9 @@ export default function LoginPage() {
                 </button>
 
                 <p className={styles.hint}>
-                    Prueba con <strong>ana@example.com</strong> / <strong>password123</strong>
+                    Usuario: <strong>ana@example.com</strong> / <strong>password123</strong>
+                    <br />
+                    Admin: <strong>admin@venti.com</strong> / <strong>admin123</strong>
                 </p>
             </form>
         </div>
