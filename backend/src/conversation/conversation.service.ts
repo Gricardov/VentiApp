@@ -68,8 +68,15 @@ export class ConversationService {
 
         // Update conversation history
         session.history.push(new HumanMessage(message));
+
+        let historyText = result.text;
+        if (result.options && result.options.length > 0) {
+            historyText += '\n\n[System: Mostraste estas opciones al usuario: ' +
+                result.options.map(o => `${o.title} (ID: ${o.id})`).join(', ') + ']';
+        }
+
         session.history.push(
-            new AIMessage(JSON.stringify(result)),
+            new AIMessage(historyText),
         );
 
         // Keep history manageable (last 20 messages)
