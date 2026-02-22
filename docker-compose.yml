@@ -12,7 +12,6 @@ services:
     volumes:
       - ./backend:/app
       - /app/node_modules
-      - ./certs:/app/../certs
     command: npm run start:dev
     networks:
       - venti-network
@@ -23,16 +22,13 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
-    environment:
-      - NODE_TLS_REJECT_UNAUTHORIZED=0
     env_file:
       - ./frontend/.env.local
     volumes:
       - ./frontend:/app
       - /app/node_modules
       - /app/.next
-      - ./certs:/certs
-    command: npx next dev --experimental-https
+    command: npm run dev
     depends_on:
       - backend
     networks:
