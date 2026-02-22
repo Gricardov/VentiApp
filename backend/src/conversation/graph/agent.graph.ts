@@ -8,20 +8,23 @@ import { EnrollmentProvider } from '../../providers/enrollment.provider';
 import { createSuggestEventsTool } from './tools/suggest-events.tool';
 import { createEnrollUserTool } from './tools/enroll-user.tool';
 
-const SYSTEM_PROMPT = `Eres Venti, un asistente inteligente de descubrimiento de eventos. Tu personalidad es amigable, entusiasta y conocedora de la escena de eventos en Latinoamérica.
+const SYSTEM_PROMPT = `Eres Venti, un asistente inteligente de descubrimiento de eventos.
 
-COMPORTAMIENTO:
-1. Al inicio de la conversación, saluda al usuario por su nombre y menciona sus intereses y ubicación. Pregúntale si quiere sugerencias basadas en esos intereses o si quiere explorar algo diferente.
-2. Cuando el usuario pida sugerencias de eventos, diga "sorpréndeme", o confirme sus intereses, usa la herramienta suggest_events.
-3. Cuando el usuario quiera modificar el itinerario (eliminar, agregar, cambiar eventos), usa suggest_events para buscar nuevos eventos y ajusta las opciones según lo que pida.
-4. Cuando el usuario confirme que quiere inscribirse, usa la herramienta enroll_user con los IDs de los eventos.
-5. Para conversación general, responde normalmente sin usar herramientas.
+REGLA #1 — OBLIGATORIA:
+SIEMPRE que el usuario pida eventos, sugerencias, recomendaciones, o diga "sorpréndeme", DEBES llamar a la herramienta suggest_events. NUNCA inventes ni listes eventos por tu cuenta. Si no llamas a suggest_events, el usuario no verá ningún evento.
 
-IMPORTANTE:
-- NO incluyas JSON en tus respuestas de texto. Solo responde en lenguaje natural.
-- Las herramientas se encargan de devolver los datos estructurados.
-- Cuando uses suggest_events, en tu texto describe brevemente los eventos sugeridos y pregunta al usuario qué le parece.
-- Siempre menciona los nombres de los eventos en tu respuesta para que el usuario sepa qué se le sugirió.
+REGLA #2 — INSCRIPCIÓN:
+Cuando el usuario quiera inscribirse, DEBES llamar a la herramienta enroll_user con los IDs.
+
+REGLA #3 — RESPUESTA NATURAL:
+Responde siempre en lenguaje natural. NO incluyas JSON en tu texto. Las herramientas generan los datos estructurados automáticamente.
+
+FLUJO IDEAL:
+1. Saluda al usuario por su nombre. Menciona que conoces sus intereses ({userInterests}) y que está en {userCity}. Pregunta si quiere sugerencias basadas en eso o algo diferente.
+2. Cuando confirme → llama suggest_events con intent basado en sus intereses.
+3. Después de recibir resultados del tool, describe brevemente los eventos por nombre y pregunta qué le parece.
+4. Si quiere modificar → llama suggest_events de nuevo con nuevo intent.
+5. Si quiere inscribirse → llama enroll_user.
 
 INFORMACIÓN DEL USUARIO:
 - Nombre: {userName}
@@ -38,17 +41,15 @@ function buildSystemPrompt(
 ): string {
     return SYSTEM_PROMPT
         .replace('{userName}', userName)
-        .replace('{userCity}', location.city)
+        .replace(/\{userCity\}/g, location.city)
         .replace('{userCountry}', location.country)
-        .replace('{userInterests}', preferences.interests.join(', '))
+        .replace(/\{userInterests\}/g, preferences.interests.join(', '))
         .replace('{userTags}', preferences.tags.join(', '))
         .replace('{userSchedule}', preferences.preferredSchedule);
 }
 
 /**
- * Extracts OptionItem[] from tool messages in the conversation.
- * This is the key fix: we parse options from the tool results directly,
- * not from the LLM's text output.
+ * Extract OptionItem[] from ToolMessage results in the graph execution.
  */
 function extractOptionsFromMessages(messages: BaseMessage[]): OptionItem[] {
     const options: OptionItem[] = [];
@@ -59,17 +60,29 @@ function extractOptionsFromMessages(messages: BaseMessage[]): OptionItem[] {
                 const parsed = JSON.parse(
                     typeof msg.content === 'string' ? msg.content : JSON.stringify(msg.content),
                 );
-                // Check if it's an array of OptionItems (from suggest_events)
                 if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].id && parsed[0].title) {
                     options.push(...parsed);
                 }
             } catch {
-                // Not JSON or not options — skip
+                // skip
             }
         }
     }
 
     return options;
+}
+
+/**
+ * Detects if the LLM hallucinated events without calling the tool.
+ * Looks for patterns like "1. **Event Name**" or numbered lists with match %.
+ */
+function looksLikeHallucinatedEvents(text: string): boolean {
+    const patterns = [
+        /\d+\.\s+\*\*[^*]+\*\*/,          // 1. **Event Name**
+        /\((?:Match|match):\s*\d+%\)/,     // (Match: 70%)
+        /\(\d+%\s*match\)/i,               // (70% match)
+    ];
+    return patterns.some((p) => p.test(text));
 }
 
 export async function runConversation(
@@ -150,8 +163,34 @@ export async function runConversation(
         ? lastMessage.content
         : JSON.stringify(lastMessage.content);
 
-    // Extract options from ALL tool messages in the result
-    const options = extractOptionsFromMessages(result.messages);
+    // Extract options from tool message results
+    let options = extractOptionsFromMessages(result.messages);
+
+    // FALLBACK: If LLM hallucinated events without calling the tool,
+    // auto-call suggest_events with the user's message as intent
+    if (options.length === 0 && looksLikeHallucinatedEvents(text)) {
+        console.log('[Venti] Detected hallucinated events — auto-calling suggest_events fallback');
+        const fallbackResults = eventProvider.matchEvents(
+            preferences,
+            userLocation,
+            message,
+        );
+        options = fallbackResults.slice(0, 6).map((event) => ({
+            id: event.id,
+            title: event.title,
+            description: event.description,
+            imageUrl: event.imageUrl,
+            matchPercentage: event.matchScore,
+            tags: event.tags,
+            date: event.date,
+            time: event.time,
+            location: `${event.location.venue}, ${event.location.city}`,
+            price: event.price,
+            category: event.category,
+            enrolled: false,
+            saved: false,
+        }));
+    }
 
     return {
         text,
