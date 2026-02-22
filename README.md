@@ -21,6 +21,10 @@ echo "OPENROUTER_API_KEY=your-key-here" >> backend/.env
 docker compose up --build
 ```
 
+```bash
+docker compose down && docker compose up --build
+```
+
 - **Frontend**: http://localhost:3000
 - **Backend**: http://localhost:4000
 
