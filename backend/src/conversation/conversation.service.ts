@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { BaseMessage, HumanMessage, AIMessage } from '@langchain/core/messages';
+import { BaseMessage, HumanMessage, AIMessage, SystemMessage } from '@langchain/core/messages';
 import { UserProvider } from '../providers/user.provider';
 import { EventProvider } from '../providers/event.provider';
 import { EnrollmentProvider } from '../providers/enrollment.provider';
@@ -68,16 +68,17 @@ export class ConversationService {
 
         // Update conversation history
         session.history.push(new HumanMessage(message));
+        session.history.push(new AIMessage(result.text));
 
-        let historyText = result.text;
         if (result.options && result.options.length > 0) {
-            historyText += '\n\n[System: Mostraste estas opciones al usuario: ' +
-                result.options.map(o => `${o.title} (ID: ${o.id})`).join(', ') + ']';
-        }
+            const systemNote = 'NOTA INTERNA: En la respuesta anterior, te comunicaste exitosamente de forma natural y le enviaste al usuario, a través de la UI (no por texto), las siguientes opciones: ' +
+                result.options.map(o => `${o.title} (ID: ${o.id})`).join(', ') +
+                '. Ya no necesitas mencionarlas con detalles, él ya las ve en su pantalla en tarjetas.';
 
-        session.history.push(
-            new AIMessage(historyText),
-        );
+            // Use an AIMessage but format it so the context is isolated. 
+            // Better yet, Langchain allows SystemMessage anywhere in the history for most modern models.
+            session.history.push(new SystemMessage(systemNote));
+        }
 
         // Keep history manageable (last 20 messages)
         if (session.history.length > 20) {
