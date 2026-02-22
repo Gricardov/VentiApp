@@ -1,0 +1,103 @@
+.container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.headerLeft {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logoText {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--accent-primary);
+}
+
+.main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+}
+
+.card {
+    max-width: 480px;
+    width: 100%;
+    padding: 48px 40px;
+    border-radius: var(--radius-xl);
+    text-align: center;
+    animation: fadeInUp 0.5s ease;
+}
+
+.iconWrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+
+.card h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+}
+
+.description {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.error {
+    margin-top: 16px;
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+}
+
+.resultCard {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    margin-top: 24px;
+    padding: 24px;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.statNumber {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--success);
+}
+
+.statFailed {
+    color: var(--danger);
+}
+
+.statLabel {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}

@@ -34,12 +34,12 @@ export function createEnrollUserTool(
         {
             name: 'enroll_user',
             description:
-                'Inscribe al usuario en uno o más eventos específicos. Usa esta herramienta cuando el usuario confirme que quiere inscribirse a eventos del itinerario. Requiere los IDs de los eventos.',
+                'OBLIGATORIO llamar cuando: (1) El usuario dice que quiere inscribirse, registrarse o apuntarse a eventos, (2) El usuario confirma una inscripción, (3) El usuario dice "inscríbeme a todos" o menciona eventos específicos para inscripción. Requiere los IDs de los eventos (formato evt-XXX). Devuelve confirmación de la inscripción.',
             schema: z.object({
                 eventIds: z
                     .array(z.string())
                     .describe(
-                        'Lista de IDs de eventos en los que inscribir al usuario. Ejemplo: ["evt-001", "evt-003"]',
+                        'Lista de IDs de eventos para inscribir al usuario. Los IDs tienen formato "evt-XXX" y provienen de los resultados de suggest_events. Ejemplo: ["evt-001", "evt-003"]',
                     ),
             }),
         },

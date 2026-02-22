@@ -15,7 +15,7 @@ export class AuthController {
         if (!user) {
             throw new UnauthorizedException('Credenciales inválidas');
         }
-        const payload = { sub: user.id, email: user.email };
+        const payload = { sub: user.id, email: user.email, role: user.role || 'user' };
         return {
             access_token: this.jwtService.sign(payload),
             user: {
@@ -23,6 +23,7 @@ export class AuthController {
                 name: user.name,
                 email: user.email,
                 avatar: user.avatar,
+                role: user.role || 'user',
             },
         };
     }

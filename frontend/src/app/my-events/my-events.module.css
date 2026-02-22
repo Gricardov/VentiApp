@@ -1,0 +1,141 @@
+.container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ─── Header ─── */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    border-bottom: 1px solid var(--border-subtle);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.headerLeft {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logoIcon {
+    font-size: 22px;
+    color: var(--accent-primary);
+}
+
+.logoText {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--accent-primary);
+    letter-spacing: -0.3px;
+    padding: 0;
+}
+
+.headerRight {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* ─── Main Content ─── */
+.main {
+    flex: 1;
+    padding: 40px 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    animation: fadeInUp 0.4s ease forwards;
+}
+
+.titleArea {
+    margin-bottom: 32px;
+    text-align: center;
+}
+
+.titleArea h1 {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+
+.titleArea p {
+    color: var(--text-secondary);
+}
+
+.error {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+    padding: 16px;
+    border-radius: var(--radius-md);
+    text-align: center;
+    margin-bottom: 24px;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.loading {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 40px;
+}
+
+/* ─── Empty State ─── */
+.emptyState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    border: 1px dashed var(--border-subtle);
+    text-align: center;
+}
+
+.emptyIcon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.8;
+}
+
+.emptyState h2 {
+    font-size: 20px;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.emptyState p {
+    color: var(--text-secondary);
+    max-width: 300px;
+}
+
+/* ─── Grid ─── */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+}
+
+.cardWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    animation: fadeInUp 0.4s ease forwards;
+}
+
+.cancelBtn {
+    width: 100%;
+    color: var(--danger) !important;
+    border-color: rgba(239, 68, 68, 0.3) !important;
+    background: rgba(239, 68, 68, 0.05) !important;
+}
+
+.cancelBtn:hover {
+    background: rgba(239, 68, 68, 0.1) !important;
+    border-color: var(--danger) !important;
+}

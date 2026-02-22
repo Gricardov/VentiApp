@@ -4,6 +4,7 @@
     "name": "Ana García",
     "email": "ana@example.com",
     "password": "password123",
+    "role": "user",
     "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Ana",
     "location": {
       "city": "Lima",
@@ -12,8 +13,19 @@
       "lng": -77.0428
     },
     "preferences": {
-      "interests": ["tecnología", "arte", "música", "startups"],
-      "tags": ["tech", "innovation", "design", "networking", "live-music"],
+      "interests": [
+        "tecnología",
+        "arte",
+        "música",
+        "startups"
+      ],
+      "tags": [
+        "tech",
+        "innovation",
+        "design",
+        "networking",
+        "live-music"
+      ],
       "preferredSchedule": "weekends",
       "maxDistance": 30
     }
@@ -23,6 +35,7 @@
     "name": "Carlos Mendoza",
     "email": "carlos@example.com",
     "password": "password123",
+    "role": "user",
     "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Carlos",
     "location": {
       "city": "Lima",
@@ -31,8 +44,19 @@
       "lng": -77.0293
     },
     "preferences": {
-      "interests": ["gastronomía", "deportes", "viajes", "fotografía"],
-      "tags": ["food", "sports", "travel", "photography", "outdoor"],
+      "interests": [
+        "gastronomía",
+        "deportes",
+        "viajes",
+        "fotografía"
+      ],
+      "tags": [
+        "food",
+        "sports",
+        "travel",
+        "photography",
+        "outdoor"
+      ],
       "preferredSchedule": "evenings",
       "maxDistance": 20
     }
@@ -42,6 +66,7 @@
     "name": "María López",
     "email": "maria@example.com",
     "password": "password123",
+    "role": "user",
     "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Maria",
     "location": {
       "city": "Bogotá",
@@ -50,8 +75,19 @@
       "lng": -74.0721
     },
     "preferences": {
-      "interests": ["yoga", "bienestar", "cocina", "literatura"],
-      "tags": ["wellness", "cooking", "books", "meditation", "health"],
+      "interests": [
+        "yoga",
+        "bienestar",
+        "cocina",
+        "literatura"
+      ],
+      "tags": [
+        "wellness",
+        "cooking",
+        "books",
+        "meditation",
+        "health"
+      ],
       "preferredSchedule": "mornings",
       "maxDistance": 15
     }
@@ -61,6 +97,7 @@
     "name": "Diego Torres",
     "email": "diego@example.com",
     "password": "password123",
+    "role": "user",
     "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Diego",
     "location": {
       "city": "Ciudad de México",
@@ -69,10 +106,41 @@
       "lng": -99.1332
     },
     "preferences": {
-      "interests": ["cine", "teatro", "videojuegos", "ciencia"],
-      "tags": ["cinema", "theater", "gaming", "science", "tech"],
+      "interests": [
+        "cine",
+        "teatro",
+        "videojuegos",
+        "ciencia"
+      ],
+      "tags": [
+        "cinema",
+        "theater",
+        "gaming",
+        "science",
+        "tech"
+      ],
       "preferredSchedule": "evenings",
       "maxDistance": 25
+    }
+  },
+  {
+    "id": "user-admin",
+    "name": "Admin Venti",
+    "email": "admin@venti.com",
+    "password": "admin123",
+    "role": "admin",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Admin",
+    "location": {
+      "city": "Lima",
+      "country": "Perú",
+      "lat": -12.0464,
+      "lng": -77.0428
+    },
+    "preferences": {
+      "interests": [],
+      "tags": [],
+      "preferredSchedule": "anytime",
+      "maxDistance": 100
     }
   }
 ]

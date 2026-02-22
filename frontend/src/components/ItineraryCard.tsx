@@ -26,7 +26,6 @@ export default function ItineraryCard({
     };
 
     const handleEnroll = () => {
-        setEnrolled(true);
         onEnroll?.(option.id);
     };
 

@@ -106,4 +106,16 @@ export const endpoints = {
         api.post<LLMResponse>('/conversation', { message }),
 
     clearSession: () => api.delete<{ message: string }>('/conversation/session'),
+
+    enrollments: {
+        getAll: () => api.get<{ events: OptionItem[]; count: number }>('/enrollments'),
+        remove: (eventId: string) => api.delete<{ success: boolean; message: string }>(`/enrollments/${eventId}`),
+    },
+
+    notifications: {
+        subscribe: (subscription: PushSubscriptionJSON) =>
+            api.post<{ success: boolean }>('/notifications/subscribe', subscription),
+        sendAll: () =>
+            api.post<{ success: boolean; sent: number; failed: number }>('/notifications/send'),
+    },
 } as const;

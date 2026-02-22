@@ -17,9 +17,19 @@ export interface User {
   name: string;
   email: string;
   password: string;
+  role: 'user' | 'admin';
   avatar: string;
   location: UserLocation;
   preferences: UserPreferences;
+}
+
+export interface PushSubscriptionRecord {
+  userId: string;
+  endpoint: string;
+  keys: {
+    p256dh: string;
+    auth: string;
+  };
 }
 
 export interface EventLocation {

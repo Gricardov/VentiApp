@@ -45,4 +45,26 @@ export class EnrollmentProvider {
             (e) => e.userId === userId && e.eventIds.includes(eventId),
         );
     }
+
+    removeEnrollment(userId: string, eventId: string): boolean {
+        const enrollments = this.readEnrollments();
+        let modified = false;
+
+        const newEnrollments = enrollments.map(e => {
+            if (e.userId === userId && e.eventIds.includes(eventId)) {
+                modified = true;
+                return {
+                    ...e,
+                    eventIds: e.eventIds.filter(id => id !== eventId)
+                };
+            }
+            return e;
+        }).filter(e => e.eventIds.length > 0); // Remove empty enrollments completely
+
+        if (modified) {
+            this.writeEnrollments(newEnrollments);
+        }
+
+        return modified;
+    }
 }
