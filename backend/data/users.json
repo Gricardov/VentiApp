@@ -1,0 +1,78 @@
+[
+  {
+    "id": "user-001",
+    "name": "Ana García",
+    "email": "ana@example.com",
+    "password": "password123",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Ana",
+    "location": {
+      "city": "Lima",
+      "country": "Perú",
+      "lat": -12.0464,
+      "lng": -77.0428
+    },
+    "preferences": {
+      "interests": ["tecnología", "arte", "música", "startups"],
+      "tags": ["tech", "innovation", "design", "networking", "live-music"],
+      "preferredSchedule": "weekends",
+      "maxDistance": 30
+    }
+  },
+  {
+    "id": "user-002",
+    "name": "Carlos Mendoza",
+    "email": "carlos@example.com",
+    "password": "password123",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Carlos",
+    "location": {
+      "city": "Lima",
+      "country": "Perú",
+      "lat": -12.1191,
+      "lng": -77.0293
+    },
+    "preferences": {
+      "interests": ["gastronomía", "deportes", "viajes", "fotografía"],
+      "tags": ["food", "sports", "travel", "photography", "outdoor"],
+      "preferredSchedule": "evenings",
+      "maxDistance": 20
+    }
+  },
+  {
+    "id": "user-003",
+    "name": "María López",
+    "email": "maria@example.com",
+    "password": "password123",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Maria",
+    "location": {
+      "city": "Bogotá",
+      "country": "Colombia",
+      "lat": 4.711,
+      "lng": -74.0721
+    },
+    "preferences": {
+      "interests": ["yoga", "bienestar", "cocina", "literatura"],
+      "tags": ["wellness", "cooking", "books", "meditation", "health"],
+      "preferredSchedule": "mornings",
+      "maxDistance": 15
+    }
+  },
+  {
+    "id": "user-004",
+    "name": "Diego Torres",
+    "email": "diego@example.com",
+    "password": "password123",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Diego",
+    "location": {
+      "city": "Ciudad de México",
+      "country": "México",
+      "lat": 19.4326,
+      "lng": -99.1332
+    },
+    "preferences": {
+      "interests": ["cine", "teatro", "videojuegos", "ciencia"],
+      "tags": ["cinema", "theater", "gaming", "science", "tech"],
+      "preferredSchedule": "evenings",
+      "maxDistance": 25
+    }
+  }
+]

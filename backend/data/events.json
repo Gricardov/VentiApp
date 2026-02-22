@@ -1,0 +1,432 @@
+[
+    {
+        "id": "evt-001",
+        "title": "Lima Tech Summit 2026",
+        "description": "La conferencia de tecnología más grande de Latinoamérica. Speakers internacionales, networking, y las últimas tendencias en IA, blockchain y cloud computing.",
+        "tags": [
+            "tech",
+            "innovation",
+            "networking",
+            "AI",
+            "cloud"
+        ],
+        "category": "tecnología",
+        "location": {
+            "city": "Lima",
+            "country": "Perú",
+            "venue": "Centro de Convenciones de Lima"
+        },
+        "date": "2026-03-15",
+        "time": "09:00",
+        "duration": "8h",
+        "imageUrl": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600",
+        "capacity": 500,
+        "price": "S/. 150",
+        "organizer": "TechLatam"
+    },
+    {
+        "id": "evt-002",
+        "title": "Festival de Arte Digital",
+        "description": "Explora instalaciones interactivas, arte generativo y experiencias inmersivas creadas por artistas digitales de toda Latinoamérica.",
+        "tags": [
+            "art",
+            "design",
+            "digital",
+            "interactive",
+            "innovation"
+        ],
+        "category": "arte",
+        "location": {
+            "city": "Lima",
+            "country": "Perú",
+            "venue": "MALI - Museo de Arte de Lima"
+        },
+        "date": "2026-03-20",
+        "time": "10:00",
+        "duration": "6h",
+        "imageUrl": "https://images.unsplash.com/photo-1561214115-f2f134cc4912?w=600",
+        "capacity": 300,
+        "price": "S/. 45",
+        "organizer": "ArteDigital Perú"
+    },
+    {
+        "id": "evt-003",
+        "title": "Noche de Jazz en Barranco",
+        "description": "Una noche mágica de jazz en vivo con la Big Band de Lima y artistas invitados. Incluye degustación de vinos y tapas.",
+        "tags": [
+            "live-music",
+            "jazz",
+            "food",
+            "nightlife",
+            "networking"
+        ],
+        "category": "música",
+        "location": {
+            "city": "Lima",
+            "country": "Perú",
+            "venue": "La Noche de Barranco"
+        },
+        "date": "2026-03-22",
+        "time": "20:00",
+        "duration": "4h",
+        "imageUrl": "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=600",
+        "capacity": 150,
+        "price": "S/. 80",
+        "organizer": "Jazz Lima"
+    },
+    {
+        "id": "evt-004",
+        "title": "Hackathon: IA para el Bien Social",
+        "description": "48 horas para construir soluciones con IA que impacten positivamente en la sociedad. Premios, mentores internacionales y networking con las mejores startups.",
+        "tags": [
+            "tech",
+            "AI",
+            "innovation",
+            "startups",
+            "networking"
+        ],
+        "category": "tecnología",
+        "location": {
+            "city": "Lima",
+            "country": "Perú",
+            "venue": "Hub UTEC"
+        },
+        "date": "2026-04-05",
+        "time": "08:00",
+        "duration": "48h",
+        "imageUrl": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600",
+        "capacity": 200,
+        "price": "Gratis",
+        "organizer": "StartupPerú"
+    },
+    {
+        "id": "evt-005",
+        "title": "Workshop de Fotografía Urbana",
+        "description": "Aprende técnicas de street photography recorriendo los barrios más icónicos de Lima. Incluye edición con Lightroom.",
+        "tags": [
+            "photography",
+            "outdoor",
+            "art",
+            "design",
+            "travel"
+        ],
+        "category": "fotografía",
+        "location": {
+            "city": "Lima",
+            "country": "Perú",
+            "venue": "Centro Histórico de Lima"
+        },
+        "date": "2026-03-28",
+        "time": "07:00",
+        "duration": "5h",
+        "imageUrl": "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=600",
+        "capacity": 25,
+        "price": "S/. 120",
+        "organizer": "FotoLima"
+    },
+    {
+        "id": "evt-006",
+        "title": "Feria Gastronómica Mistura Pop-Up",
+        "description": "Los mejores chefs de Perú presentan sus creaciones en una experiencia culinaria única. Degustaciones, clases de cocina en vivo y maridajes.",
+        "tags": [
+            "food",
+            "cooking",
+            "networking",
+            "travel"
+        ],
+        "category": "gastronomía",
+        "location": {
+            "city": "Lima",
+            "country": "Perú",
+            "venue": "Parque de la Exposición"
+        },
+        "date": "2026-04-12",
+        "time": "11:00",
+        "duration": "10h",
+        "imageUrl": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600",
+        "capacity": 1000,
+        "price": "S/. 35",
+        "organizer": "Apega"
+    },
+    {
+        "id": "evt-007",
+        "title": "Maratón Lima 10K",
+        "description": "Corre los 10K más emblemáticos de Lima con vista al mar. Kit de corredor, medalla finisher y after-party incluidos.",
+        "tags": [
+            "sports",
+            "outdoor",
+            "health",
+            "travel"
+        ],
+        "category": "deportes",
+        "location": {
+            "city": "Lima",
+            "country": "Perú",
+            "venue": "Malecón de Miraflores"
+        },
+        "date": "2026-04-20",
+        "time": "06:30",
+        "duration": "3h",
+        "imageUrl": "https://images.unsplash.com/photo-1513593771513-7b58b6c4af38?w=600",
+        "capacity": 5000,
+        "price": "S/. 90",
+        "organizer": "Lima Runners"
+    },
+    {
+        "id": "evt-008",
+        "title": "Retiro de Yoga y Meditación",
+        "description": "Un fin de semana de conexión interior en las afueras de Lima. Yoga, meditación, alimentación consciente y caminatas en la naturaleza.",
+        "tags": [
+            "wellness",
+            "meditation",
+            "health",
+            "outdoor"
+        ],
+        "category": "bienestar",
+        "location": {
+            "city": "Lima",
+            "country": "Perú",
+            "venue": "Cieneguilla Retreat Center"
+        },
+        "date": "2026-03-29",
+        "time": "07:00",
+        "duration": "48h",
+        "imageUrl": "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600",
+        "capacity": 30,
+        "price": "S/. 350",
+        "organizer": "Zen Lima"
+    },
+    {
+        "id": "evt-009",
+        "title": "Club de Lectura: Sci-Fi Latinoamericano",
+        "description": "Discusión mensual de ciencia ficción escrita por autores latinoamericanos. Este mes: 'Las constelaciones oscuras' de Pola Oloixarac.",
+        "tags": [
+            "books",
+            "science",
+            "networking"
+        ],
+        "category": "literatura",
+        "location": {
+            "city": "Lima",
+            "country": "Perú",
+            "venue": "Librería El Virrey"
+        },
+        "date": "2026-03-25",
+        "time": "19:00",
+        "duration": "2h",
+        "imageUrl": "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600",
+        "capacity": 40,
+        "price": "Gratis",
+        "organizer": "Lectores Lima"
+    },
+    {
+        "id": "evt-010",
+        "title": "Startup Weekend Lima",
+        "description": "54 horas para lanzar tu startup. Forma equipos, valida ideas, construye prototipos y pitchea ante inversores reales.",
+        "tags": [
+            "startups",
+            "innovation",
+            "tech",
+            "networking"
+        ],
+        "category": "tecnología",
+        "location": {
+            "city": "Lima",
+            "country": "Perú",
+            "venue": "WeWork Miraflores"
+        },
+        "date": "2026-04-18",
+        "time": "18:00",
+        "duration": "54h",
+        "imageUrl": "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=600",
+        "capacity": 100,
+        "price": "S/. 50",
+        "organizer": "Techstars"
+    },
+    {
+        "id": "evt-011",
+        "title": "Taller de Cocina Nikkei",
+        "description": "Aprende los secretos de la fusión peruano-japonesa con el Chef Takeshi Morimoto. Incluye ingredientes y degustación.",
+        "tags": [
+            "food",
+            "cooking",
+            "travel"
+        ],
+        "category": "gastronomía",
+        "location": {
+            "city": "Lima",
+            "country": "Perú",
+            "venue": "Le Cordon Bleu Lima"
+        },
+        "date": "2026-04-08",
+        "time": "16:00",
+        "duration": "3h",
+        "imageUrl": "https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=600",
+        "capacity": 20,
+        "price": "S/. 200",
+        "organizer": "Le Cordon Bleu"
+    },
+    {
+        "id": "evt-012",
+        "title": "Gaming Expo Lima",
+        "description": "La expo de videojuegos más grande de Perú. Torneos de esports, demos exclusivos, cosplay y paneles con desarrolladores indie.",
+        "tags": [
+            "gaming",
+            "tech",
+            "entertainment"
+        ],
+        "category": "videojuegos",
+        "location": {
+            "city": "Lima",
+            "country": "Perú",
+            "venue": "Jockey Plaza Convention Center"
+        },
+        "date": "2026-05-10",
+        "time": "10:00",
+        "duration": "12h",
+        "imageUrl": "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600",
+        "capacity": 3000,
+        "price": "S/. 60",
+        "organizer": "GamersPerú"
+    },
+    {
+        "id": "evt-013",
+        "title": "Festival de Cine Independiente",
+        "description": "Proyecciones de las mejores películas independientes latinoamericanas, seguidas de Q&A con los directores.",
+        "tags": [
+            "cinema",
+            "art",
+            "entertainment"
+        ],
+        "category": "cine",
+        "location": {
+            "city": "Ciudad de México",
+            "country": "México",
+            "venue": "Cineteca Nacional"
+        },
+        "date": "2026-04-15",
+        "time": "15:00",
+        "duration": "6h",
+        "imageUrl": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=600",
+        "capacity": 400,
+        "price": "$150 MXN",
+        "organizer": "CineMX"
+    },
+    {
+        "id": "evt-014",
+        "title": "Obra de Teatro: El Principito Reimaginado",
+        "description": "Una adaptación moderna y visual del clásico de Saint-Exupéry con efectos de mapping y música en vivo.",
+        "tags": [
+            "theater",
+            "art",
+            "entertainment"
+        ],
+        "category": "teatro",
+        "location": {
+            "city": "Ciudad de México",
+            "country": "México",
+            "venue": "Teatro Insurgentes"
+        },
+        "date": "2026-04-22",
+        "time": "20:00",
+        "duration": "2h",
+        "imageUrl": "https://images.unsplash.com/photo-1503095396549-807759245b35?w=600",
+        "capacity": 600,
+        "price": "$250 MXN",
+        "organizer": "Teatros CDMX"
+    },
+    {
+        "id": "evt-015",
+        "title": "Feria del Libro Bogotá",
+        "description": "La feria del libro más importante de Colombia. Charlas con autores, presentaciones, talleres y firmas de libros.",
+        "tags": [
+            "books",
+            "art",
+            "networking"
+        ],
+        "category": "literatura",
+        "location": {
+            "city": "Bogotá",
+            "country": "Colombia",
+            "venue": "Corferias"
+        },
+        "date": "2026-04-25",
+        "time": "09:00",
+        "duration": "12h",
+        "imageUrl": "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=600",
+        "capacity": 10000,
+        "price": "$20.000 COP",
+        "organizer": "FILBo"
+    },
+    {
+        "id": "evt-016",
+        "title": "Concierto Sinfónico bajo las Estrellas",
+        "description": "La Orquesta Sinfónica de Lima presenta un concierto al aire libre con obras de Beethoven y Villa-Lobos.",
+        "tags": [
+            "live-music",
+            "art",
+            "outdoor"
+        ],
+        "category": "música",
+        "location": {
+            "city": "Lima",
+            "country": "Perú",
+            "venue": "Anfiteatro del Parque de la Exposición"
+        },
+        "date": "2026-04-02",
+        "time": "19:30",
+        "duration": "2.5h",
+        "imageUrl": "https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=600",
+        "capacity": 800,
+        "price": "S/. 25",
+        "organizer": "Orquesta Sinfónica de Lima"
+    },
+    {
+        "id": "evt-017",
+        "title": "Taller de Bienestar y Mindfulness",
+        "description": "Aprende técnicas de mindfulness aplicadas al trabajo y la vida cotidiana. Incluye materiales y certificado.",
+        "tags": [
+            "wellness",
+            "meditation",
+            "health"
+        ],
+        "category": "bienestar",
+        "location": {
+            "city": "Bogotá",
+            "country": "Colombia",
+            "venue": "Centro Cultural Gabriel García Márquez"
+        },
+        "date": "2026-04-10",
+        "time": "09:00",
+        "duration": "4h",
+        "imageUrl": "https://images.unsplash.com/photo-1545389336-cf090694435e?w=600",
+        "capacity": 50,
+        "price": "$80.000 COP",
+        "organizer": "Mindful Bogotá"
+    },
+    {
+        "id": "evt-018",
+        "title": "Ciclovía Cultural",
+        "description": "Recorre en bicicleta los murales y galerías urbanas de Lima con guía especializado. Bicicleta incluida.",
+        "tags": [
+            "outdoor",
+            "art",
+            "sports",
+            "travel",
+            "photography"
+        ],
+        "category": "deportes",
+        "location": {
+            "city": "Lima",
+            "country": "Perú",
+            "venue": "Barranco - Miraflores"
+        },
+        "date": "2026-03-30",
+        "time": "08:00",
+        "duration": "4h",
+        "imageUrl": "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600",
+        "capacity": 30,
+        "price": "S/. 55",
+        "organizer": "CicloLima"
+    }
+]
