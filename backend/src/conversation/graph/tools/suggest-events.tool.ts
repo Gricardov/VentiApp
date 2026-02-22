@@ -40,18 +40,18 @@ export function createSuggestEventsTool(
         {
             name: 'suggest_events',
             description:
-                'Sugiere eventos personalizados basados en los intereses y ubicación del usuario. Usa esta herramienta cuando el usuario quiera descubrir eventos, recibir sugerencias, crear un itinerario o cuando diga "sorpréndeme". Devuelve una lista de eventos con porcentaje de match.',
+                'OBLIGATORIO llamar en estas situaciones: (1) El usuario pide sugerencias o recomendaciones de eventos, (2) El usuario dice "sorpréndeme" o "qué hay para mí", (3) El usuario confirma que quiere ver eventos basados en sus intereses, (4) El usuario pide modificar el itinerario (agregar, cambiar o buscar otros eventos), (5) El usuario menciona cualquier categoría como tecnología, música, arte, gastronomía, etc. NUNCA listes eventos sin llamar esta herramienta primero. Devuelve eventos reales de la base de datos con porcentaje de match.',
             schema: z.object({
                 intent: z
                     .string()
                     .describe(
-                        'La intención o interés específico del usuario para filtrar eventos. Ejemplo: "tecnología", "música en vivo", "gastronomía"',
+                        'La intención o tema de búsqueda extraído del mensaje del usuario. Usa palabras clave relevantes. Ejemplos: "tecnología e innovación", "música en vivo y jazz", "gastronomía peruana", "arte y diseño". Si el usuario dice "sorpréndeme", usa sus intereses del perfil.',
                     ),
                 maxResults: z
                     .number()
                     .optional()
                     .default(6)
-                    .describe('Número máximo de eventos a sugerir'),
+                    .describe('Número máximo de eventos a sugerir. Usa 6 por defecto, o menos si el usuario pide pocos.'),
             }),
         },
     );
