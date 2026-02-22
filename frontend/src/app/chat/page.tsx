@@ -23,7 +23,8 @@ export default function ChatPage() {
     const [listening, setListening] = useState(false);
     const [speakingId, setSpeakingId] = useState<string | null>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
-    const recognitionRef = useRef<SpeechRecognition | null>(null);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const recognitionRef = useRef<any>(null);
 
     useEffect(() => {
         const token = localStorage.getItem('venti_token');
@@ -51,11 +52,10 @@ export default function ChatPage() {
             return;
         }
 
-        const SpeechRecognition =
-            (window as unknown as { SpeechRecognition?: typeof window.SpeechRecognition; webkitSpeechRecognition?: typeof window.SpeechRecognition })
-                .SpeechRecognition ||
-            (window as unknown as { webkitSpeechRecognition?: typeof window.SpeechRecognition })
-                .webkitSpeechRecognition;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const SpeechRecognition: any =
+            (window as any).SpeechRecognition ||
+            (window as any).webkitSpeechRecognition;
 
         if (!SpeechRecognition) {
             alert('Tu navegador no soporta reconocimiento de voz.');
@@ -67,7 +67,8 @@ export default function ChatPage() {
         recognition.interimResults = false;
         recognition.maxAlternatives = 1;
 
-        recognition.onresult = (event: SpeechRecognitionEvent) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        recognition.onresult = (event: any) => {
             const transcript = event.results[0][0].transcript;
             setInput(transcript);
             setListening(false);

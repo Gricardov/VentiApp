@@ -4,7 +4,8 @@ import { UserProvider } from '../../providers/user.provider';
 import { EventProvider } from '../../providers/event.provider';
 import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
 import type { Request } from 'express';
-import * as webpush from 'web-push';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const webpush = require('web-push');
 
 @Controller('notifications')
 export class NotificationController {
