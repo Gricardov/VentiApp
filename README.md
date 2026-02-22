@@ -78,6 +78,112 @@ Venti/
 └── README.md
 ```
 
+## 🧩 Arquitectura de Software
+
+El proyecto usa una **Layered Architecture** (arquitectura en capas) con el patrón **Provider** para acceso a datos:
+
+```
+┌──────────────────────────────────────────────────────────┐
+│                    PRESENTACIÓN (NextJS)                  │
+│  Login Page → Chat Page → ItineraryCard Components       │
+│  lib/env.ts (config) → lib/api.ts (HTTP client unificado)│
+└───────────────────────┬──────────────────────────────────┘
+                        │ REST (JWT Bearer)
+┌───────────────────────▼──────────────────────────────────┐
+│                    CONTROLADORES (NestJS)                 │
+│  AuthController (/auth/login)                            │
+│  ConversationController (/conversation) ← JwtAuthGuard   │
+└───────────────────────┬──────────────────────────────────┘
+                        │
+┌───────────────────────▼──────────────────────────────────┐
+│                    SERVICIOS (Business Logic)             │
+│  ConversationService (session management, context inject) │
+└───────────────────────┬──────────────────────────────────┘
+                        │
+┌───────────────────────▼──────────────────────────────────┐
+│              ORQUESTACIÓN IA (LangGraph StateGraph)       │
+│  Agent Node → [suggest_events | enroll_user] → Agent     │
+│                      ↕ OpenRouter API                    │
+└───────────────────────┬──────────────────────────────────┘
+                        │
+┌───────────────────────▼──────────────────────────────────┐
+│                 PROVIDERS (Data Access Layer)             │
+│  UserProvider (users.json)                               │
+│  EventProvider (events.json) ← match scoring algorithm   │
+│  EnrollmentProvider (enrollments.json) ← write/read      │
+└──────────────────────────────────────────────────────────┘
+```
+
+### Patrones de Diseño
+
+| Patrón | Dónde | Propósito |
+|--------|-------|-----------|
+| **Layered Architecture** | Controller → Service → Provider | Separación de responsabilidades por capa |
+| **Provider Pattern** | `UserProvider`, `EventProvider`, `EnrollmentProvider` | Acceso a datos JSON sin DB, fácilmente reemplazable |
+| **Guard Pattern** | `JwtAuthGuard` en rutas protegidas | Autenticación declarativa por decorador |
+| **Tool-based Agent** | LangGraph con tools dinámicos | El LLM decide qué herramientas usar según intención |
+| **Session-per-user** | `ConversationService` con Map en memoria | Historial de conversación por usuario |
+| **Unified API Client** | `lib/api.ts` centraliza fetch + auth | Punto único de acceso al backend |
+| **Response Schema** | `LLMResponse { text?, options? }` | Contrato estandarizado entre backend y frontend |
+| **Global Module** | `ProvidersModule` con `@Global()` | Inyección de dependencias disponible en toda la app |
+
+### Diagrama de Flujo (Mermaid)
+
+```mermaid
+graph TB
+    subgraph Frontend
+        A[Login Page] -->|JWT| B[Chat Page]
+        B --> C[ItineraryCard]
+        B --> D[lib/api.ts]
+    end
+
+    subgraph Backend
+        E[AuthController] -->|validate| F[UserProvider]
+        G[ConversationController] -->|userId + prefs| H[ConversationService]
+        H --> I[LangGraph Agent]
+    end
+
+    subgraph LangGraph
+        I --> J{Router LLM}
+        J -->|suggest| K[suggest_events Tool]
+        J -->|enroll| L[enroll_user Tool]
+        K --> M[EventProvider]
+        L --> N[EnrollmentProvider]
+        J -->|API call| O[OpenRouter]
+    end
+
+    D -->|POST /auth/login| E
+    D -->|POST /conversation| G
+```
+
+```mermaid
+sequenceDiagram
+    actor User
+    participant FE as Frontend
+    participant BE as Backend
+    participant LG as LangGraph
+    participant OR as OpenRouter
+    participant EP as EventProvider
+
+    User->>FE: Login (email/password)
+    FE->>BE: POST /auth/login
+    BE-->>FE: JWT Token
+
+    User->>FE: "Eventos de arte en Lima"
+    FE->>BE: POST /conversation (JWT)
+    BE->>BE: Extract userId → load preferences
+    BE->>LG: message + userPreferences
+    LG->>OR: Chat completion con tools
+    OR-->>LG: tool_call suggest_events
+    LG->>EP: matchEvents(prefs, intent)
+    EP-->>LG: eventos rankeados
+    LG->>OR: tool result
+    OR-->>LG: JSON formateado
+    LG-->>BE: LLMResponse
+    BE-->>FE: {text, options[]}
+    FE->>User: Texto + Itinerary Cards
+```
+
 ## 📡 API Endpoints
 
 ### Auth
