@@ -17,7 +17,7 @@ export function createSuggestEventsTool(
                 intent,
             );
 
-            const topEvents = matchedEvents.slice(0, maxResults || 6);
+            const topEvents = matchedEvents.slice(0, maxResults || 3);
 
             const options: OptionItem[] = topEvents.map((event) => ({
                 id: event.id,
@@ -50,8 +50,8 @@ export function createSuggestEventsTool(
                 maxResults: z
                     .number()
                     .optional()
-                    .default(6)
-                    .describe('Número máximo de eventos a sugerir. Usa 6 por defecto, o menos si el usuario pide pocos.'),
+                    .default(3)
+                    .describe('Número máximo de eventos a sugerir. Usa 3 por defecto.'),
             }),
         },
     );

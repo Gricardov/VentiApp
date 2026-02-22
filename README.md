@@ -235,8 +235,59 @@ The AI agent uses a **StateGraph** with these nodes:
 
 | Tool | Trigger | Action |
 |------|---------|--------|
-| `suggest_events` | "Sugiereme eventos", "Sorpréndeme" | Queries EventProvider, scores matches |
-| `enroll_user` | "Inscríbeme", "Confirmo" | Writes to enrollments.json |
+| `suggest_events` | "Sugiereme eventos", "Sorpréndeme", confirmar intereses, pedir categoría | Queries EventProvider, scores matches, returns max 3 |
+| `enroll_user` | "Inscríbeme", "Confirmo", "Apuntame" | Writes to enrollments.json |
+
+### Flujo de Respuesta (Response Flow)
+
+```
+1. Frontend: endpoints.chat(message) → POST /conversation + JWT
+
+2. ConversationController.chat(req, body)
+   → Extrae userId del JWT
+   → Llama conversationService.chat(userId, message)
+
+3. ConversationService.chat()
+   → userProvider.getUserPreferences(userId)       ← users.json
+   → getOrCreateSession(userId)                     ← Map en memoria
+   → configService.get('OPENROUTER_API_KEY')        ← .env
+   → runConversation(message, history, prefs, ...)  ← LangGraph
+
+4. runConversation() — agent.graph.ts
+   ├─ ChatOpenAI({ baseURL: openrouter })
+   ├─ createSuggestEventsTool(eventProvider)
+   ├─ createEnrollUserTool(enrollmentProvider)
+   ├─ model.bindTools(tools)
+   │
+   ├─ graph.invoke(messages)                ← StateGraph execution
+   │   ├─ START → agent node (LLM decides)
+   │   ├─ shouldContinue() → tool_calls?
+   │   │   ├─ YES → tools node
+   │   │   │   ├─ suggest_events → eventProvider.matchEvents()
+   │   │   │   └─ enroll_user → enrollmentProvider.enrollUser()
+   │   │   └─ → back to agent node (loop)
+   │   └─ NO → END
+   │
+   ├─ extractOptionsFromMessages()          ← Parse ToolMessage results
+   │
+   ├─ looksLikeHallucinatedEvents()?        ← Fallback detection
+   │   └─ YES → eventProvider.matchEvents() directo
+   │
+   ├─ options.slice(0, 3)                   ← Max 3 results
+   │
+   └─ formatResponseWithLLM()              ← 2nd LLM call
+       └─ Separa text de options (sin duplicación)
+
+5. ConversationService (post-graph)
+   → session.history.push(messages)         ← Memoria temporal
+   → Limita a últimos 20 mensajes
+
+6. Frontend: parseResponse(raw)
+   → Safety parser (limpia JSON filtrado en text)
+   → Renderiza text + ItineraryCard[]
+```
+
+**Almacenamiento de mensajes:** En memoria (`Map<userId, session>`). Se borran al reiniciar el servidor.
 
 ## 🎨 Features
 
